@@ -1,4 +1,4 @@
-package cn.herculas.recruit.gateway.enumeration.role;
+package cn.herculas.recruit.gateway.enumeration;
 
 import lombok.Getter;
 
