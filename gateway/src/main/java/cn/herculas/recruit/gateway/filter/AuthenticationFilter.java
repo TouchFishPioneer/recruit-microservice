@@ -1,6 +1,7 @@
 package cn.herculas.recruit.gateway.filter;
 
 import cn.herculas.recruit.gateway.enumeration.PermissionEnum;
+import cn.herculas.recruit.gateway.enumeration.RoleEnum;
 import cn.herculas.recruit.gateway.service.CookieService;
 import cn.herculas.recruit.gateway.service.SessionService;
 import com.netflix.zuul.ZuulFilter;
@@ -38,7 +39,8 @@ public class AuthenticationFilter extends ZuulFilter {
     public boolean shouldFilter() {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest httpServletRequest = requestContext.getRequest();
-        return PermissionEnum.rolePermitted(httpServletRequest.getMethod(), httpServletRequest.getRequestURI()) != null;
+        List<Integer> permittedRoles = PermissionEnum.rolePermitted(httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
+        return permittedRoles == null || !permittedRoles.contains(RoleEnum.NO_DEMAND.getCode());
     }
 
     @Override
@@ -46,19 +48,38 @@ public class AuthenticationFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest httpServletRequest = requestContext.getRequest();
         Cookie cookie = cookieService.findCookie(httpServletRequest);
+
+        // If no cookie in request
+
         if (cookie == null) {
             requestContext.setSendZuulResponse(false);
             requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
             return null;
         }
-        List<Integer> rolePermitted = PermissionEnum.rolePermitted(httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
-        Integer role = Integer.valueOf(sessionService.getRoleFromSession(cookie));
 
-        if (rolePermitted == null) {
+        List<Integer> permittedRoles = PermissionEnum.rolePermitted(httpServletRequest.getMethod(), httpServletRequest.getRequestURI());
+        String roleString = sessionService.getRoleFromSession(cookie);
+
+        // If no consistent session in database
+
+        if (roleString == null) {
+            requestContext.setSendZuulResponse(false);
+            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
             return null;
         }
 
-        if (!rolePermitted.contains(role)) {
+        // If try to access a path which has not been logged
+
+        if (permittedRoles == null) {
+            requestContext.setSendZuulResponse(false);
+            requestContext.setResponseStatusCode(HttpStatus.FORBIDDEN.value());
+            return null;
+        }
+
+        // If the permitted list of this path do not contains the role of this request
+
+        Integer thisRole = Integer.valueOf(roleString);
+        if (!permittedRoles.contains(thisRole)) {
             requestContext.setSendZuulResponse(false);
             requestContext.setResponseStatusCode(HttpStatus.FORBIDDEN.value());
             return null;
