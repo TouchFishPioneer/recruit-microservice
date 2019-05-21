@@ -13,7 +13,7 @@
    **Request**
    
    ```http request
-   GET /student-info/list?page=0&size=20
+   GET /student/info/list?page=0&size=20
    ```
    
    **Response**
@@ -99,7 +99,7 @@
     **Request**
     
     ```http request
-    GET /student-info/index/{uuid}
+    GET /student/info/index/{uuid}
     ```
     
     **Response**
@@ -143,7 +143,7 @@
     **Request**
     
     ```http request
-    POST /student-info/index
+    POST /student/info/index
     ```
     
     **Parameters**
@@ -209,7 +209,7 @@
     **Request**
     
     ```http request
-    PATCH /student-info/index
+    PATCH /student/info/index
     ```
     
     **Parameters**
@@ -261,7 +261,7 @@
     **Request**
     
     ```http request
-    GET /teacher-info/list?page=0&size=20
+    GET /teacher/info/list?page=0&size=20
     ```
     
     **Response**
@@ -320,7 +320,7 @@
     **Request**
     
     ```http request
-    GET /teacher-info/index/{uuid}
+    GET /teacher/info/index/{uuid}
     ```
     
     **Response**
@@ -354,7 +354,7 @@
     **Request**
     
     ```http request
-    POST /teacher-info/index
+    POST /teacher/info/index
     ```
     
     **Parameters**
@@ -404,7 +404,7 @@
     **Request**
     
     ```http request
-    PATCH /teacher-info/index
+    PATCH /teacher/info/index
     ```
     
     **Parameters**
@@ -446,7 +446,7 @@
     **Request**
     
     ```http request
-    GET /student-account/index
+    GET /student/account/index
     ```
 
     **Parameters**
@@ -481,7 +481,7 @@
     **Request**
     
     ```http request
-    POST /student-account/index
+    POST /student/account/index
     ```
     
     **Parameters**
@@ -516,7 +516,7 @@
     **Request**
     
     ```http request
-    PATCH /student-account/detail
+    PATCH /student/account/detail
     ```
     
     **Parameters**
@@ -554,7 +554,7 @@
     **Request**
     
     ```http request
-    PATCH /student-account/password
+    PATCH /student/account/password
     ```
     
     **Parameters**
@@ -587,7 +587,7 @@
     **Request**
     
     ```http request
-    GET /teacher-account/index
+    GET /teacher/account/index
     ```
     
     **Parameters**
@@ -625,7 +625,7 @@
     **Request**
     
     ```http request
-    POST /teacher-account/index
+    POST /teacher/account/index
     ```
     
     **Parameters**
@@ -668,7 +668,7 @@
     **Request**
     
     ```http request
-    PATCH /teacher-account/detail
+    PATCH /teacher/account/detail
     ```
     
     **Parameters**
@@ -708,7 +708,7 @@
     **Request**
     
     ```http request
-    PATCH /teacher-account/password
+    PATCH /teacher/account/password
     ```
     
     **Parameters**
@@ -781,7 +781,7 @@
     **Request**
     
     ```http request
-    POST /student-log/in
+    POST /student/log/login
     ```
 
     **Parameters**
@@ -814,7 +814,7 @@
     **Request**
     
     ```http request
-    POST /student-log/out
+    POST /student/log/logout
     ```
     
     **Response**
@@ -839,7 +839,7 @@
     **Request**
     
     ```http request
-    POST /teacher-log/in
+    POST /teacher/log/login
     ```
     
     **Parameters**
@@ -873,7 +873,7 @@
     **Request**
     
     ```http request
-    POST /teacher-log/out
+    POST /teacher/log/logout
     ```
     
     **Response**

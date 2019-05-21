@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/account")
 public class StudentAccountController {
 
     private final StudentAccountService studentAccountService;
@@ -88,7 +89,6 @@ public class StudentAccountController {
         } catch (StudentException e) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, e);
         }
-
         if (!studentAccount.getStudentPassword().equals(oldPassword)) {
             return ResponseWrapper.error(
                     HttpStatus.BAD_REQUEST,

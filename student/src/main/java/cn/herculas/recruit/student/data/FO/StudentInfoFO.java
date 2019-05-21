@@ -3,7 +3,6 @@ package cn.herculas.recruit.student.data.FO;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Data

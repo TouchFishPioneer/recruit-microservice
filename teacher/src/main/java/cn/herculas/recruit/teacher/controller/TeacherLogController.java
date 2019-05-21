@@ -1,15 +1,14 @@
-package cn.herculas.recruit.student.controller;
+package cn.herculas.recruit.teacher.controller;
 
-import cn.herculas.recruit.student.data.DO.StudentAccount;
-import cn.herculas.recruit.student.data.FO.StudentLoginFO;
-import cn.herculas.recruit.student.data.VO.ResponseVO;
-import cn.herculas.recruit.student.enumeration.RoleEnum;
-import cn.herculas.recruit.student.exception.StudentException;
-import cn.herculas.recruit.student.service.CaptchaService;
-import cn.herculas.recruit.student.service.CookieService;
-import cn.herculas.recruit.student.service.SessionService;
-import cn.herculas.recruit.student.service.StudentAccountService;
-import cn.herculas.recruit.student.util.wrapper.ResponseWrapper;
+import cn.herculas.recruit.teacher.data.DO.TeacherAccount;
+import cn.herculas.recruit.teacher.data.FO.TeacherLoginFO;
+import cn.herculas.recruit.teacher.data.VO.ResponseVO;
+import cn.herculas.recruit.teacher.exception.TeacherException;
+import cn.herculas.recruit.teacher.service.CaptchaService;
+import cn.herculas.recruit.teacher.service.CookieService;
+import cn.herculas.recruit.teacher.service.SessionService;
+import cn.herculas.recruit.teacher.service.TeacherAccountService;
+import cn.herculas.recruit.teacher.util.wrapper.ResponseWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,46 +22,45 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/log")
-public class StudentLogController {
+public class TeacherLogController {
 
     private final CaptchaService captchaService;
     private final CookieService cookieService;
     private final SessionService sessionService;
-    private final StudentAccountService studentAccountService;
+    private final TeacherAccountService teacherAccountService;
 
-    public StudentLogController(CaptchaService captchaService,
+    public TeacherLogController(CaptchaService captchaService,
                                 CookieService cookieService,
                                 SessionService sessionService,
-                                StudentAccountService studentAccountService) {
+                                TeacherAccountService teacherAccountService) {
         this.captchaService = captchaService;
         this.cookieService = cookieService;
         this.sessionService = sessionService;
-        this.studentAccountService = studentAccountService;
+        this.teacherAccountService = teacherAccountService;
     }
 
     @PostMapping("/login")
-    public ResponseVO studentLogin(@Valid StudentLoginFO studentLoginFO,
+    public ResponseVO studentLogin(@Valid TeacherLoginFO teacherLoginFO,
                                    BindingResult bindingResult,
                                    HttpServletResponse httpServletResponse) {
 
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
-        if (!captchaService.validateCaptcha(studentLoginFO.getCaptcha_key(), studentLoginFO.getCaptcha_content())) {
+        if (!captchaService.validateCaptcha(teacherLoginFO.getCaptcha_key(), teacherLoginFO.getCaptcha_content())) {
             return ResponseWrapper.error(HttpStatus.FORBIDDEN, "captcha", "Captcha false.");
         }
-
         try {
-            StudentAccount studentAccount = studentAccountService.confirmStudentAccount(
-                    studentLoginFO.getEmail(),
-                    studentLoginFO.getPassword());
+            TeacherAccount teacherAccount = teacherAccountService.confirmTeacherAccount(
+                    teacherLoginFO.getUsername(),
+                    teacherLoginFO.getPassword());
             String sessionId = sessionService.generateSession(
-                    studentAccount.getStudentUuid(),
-                    String.valueOf(RoleEnum.STUDENT.getCode()),
+                    teacherAccount.getTeacherUuid(),
+                    String.valueOf(teacherAccount.getTeacherRole()),
                     "null");
             cookieService.generateCookie(httpServletResponse, sessionId);
             return ResponseWrapper.success();
-        } catch (StudentException e) {
+        } catch (TeacherException e) {
             return ResponseWrapper.error(HttpStatus.FORBIDDEN, e);
         }
     }
