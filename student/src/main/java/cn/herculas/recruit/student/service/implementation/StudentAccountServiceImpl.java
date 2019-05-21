@@ -51,4 +51,19 @@ public class StudentAccountServiceImpl implements StudentAccountService {
         PropertyReplicator.copyPropertiesIgnoreNull(studentAccount, oldStudentAccount);
         return studentAccountRepository.save(studentAccount);
     }
+
+    @Override
+    public StudentAccount confirmStudentAccount(String studentEmail, String studentPassword) throws StudentException {
+        StudentAccount studentAccount = studentAccountRepository.findByStudentEmail(studentEmail);
+        if (studentAccount == null) {
+            throw new StudentException(ExceptionStatusEnum.STUDENT_NOT_EXIST);
+        }
+        if (studentAccount.getStudentStatus().equals(AccountStatusEnum.DISABLED.getCode())) {
+            throw new StudentException(ExceptionStatusEnum.STATUS_ERROR);
+        }
+        if (!studentAccount.getStudentPassword().equals(studentPassword)) {
+            throw new StudentException(ExceptionStatusEnum.PASSWORD_ERROR);
+        }
+        return studentAccount;
+    }
 }

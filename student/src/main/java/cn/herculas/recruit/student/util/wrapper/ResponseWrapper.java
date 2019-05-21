@@ -32,7 +32,7 @@ public class ResponseWrapper {
 
     public static ResponseVO error(HttpStatus httpStatus, StudentException e) {
         Map<String, String> errorMessageMap = new HashMap<>();
-        errorMessageMap.put("error", e.getMessage());
+        errorMessageMap.put(String.valueOf(e.getExceptionCode()), e.getMessage());
         return ResponseWrapper.error(httpStatus, errorMessageMap);
     }
 

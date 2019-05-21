@@ -6,4 +6,5 @@ public interface StudentAccountService {
     StudentAccount findStudentAccount(String studentUuid);
     StudentAccount createStudentAccount(StudentAccount studentAccount);
     StudentAccount updateStudentAccount(StudentAccount studentAccount);
+    StudentAccount confirmStudentAccount(String studentEmail, String studentPassword);
 }
