@@ -1,7 +1,6 @@
 package cn.herculas.recruit.captcha.util.wrapper;
 
 import cn.herculas.recruit.captcha.data.VO.ResponseVO;
-import org.springframework.http.HttpStatus;
 
 public class ResponseWrapper {
     public static <T> ResponseVO<T> success(T data) {
@@ -9,14 +8,6 @@ public class ResponseWrapper {
         responseVO.setCode(200);
         responseVO.setMessage("success");
         responseVO.setData(data);
-        return responseVO;
-    }
-
-    public static ResponseVO error(HttpStatus httpStatus, String detail) {
-        ResponseVO responseVO = new ResponseVO();
-        responseVO.setCode(httpStatus.value());
-        String message = String.format("%s. %s", httpStatus.getReasonPhrase(), detail);
-        responseVO.setMessage(message);
         return responseVO;
     }
 }

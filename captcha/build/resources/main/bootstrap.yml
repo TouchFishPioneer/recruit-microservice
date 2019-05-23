@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: captcha
+  cloud:
+    config:
+      discovery:
+        service-id: config
+        enabled: true
+      profile: dev
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    password: 19941120
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bkzs.seu.edu.cn:8761/eureka/, http://bkzs.seu.edu.cn:8761/eureka/

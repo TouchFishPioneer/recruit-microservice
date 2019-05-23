@@ -28,7 +28,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public String createCaptcha() {
-        String captchaKey = captchaPrefix + KeyGenerator.uuidGenerator().substring(0, 10);
+        String captchaKey = captchaPrefix + KeyGenerator.uuidGenerator().substring(0, 20);
         String captchaContent = captchaProducer.createText();
 
         stringRedisTemplate.opsForValue().set(captchaKey, captchaContent, expires, TimeUnit.SECONDS);

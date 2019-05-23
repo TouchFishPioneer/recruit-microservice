@@ -30,7 +30,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public String createSession(String uuid, String role, String region) {
-        String sessionId = SESSION_KEY_PREFIX + KeyGenerator.uuidGenerator().substring(0, 10);
+        String sessionId = SESSION_KEY_PREFIX + KeyGenerator.uuidGenerator().substring(0, 20);
 
         Map<String, String> sessionContent = new HashMap<>();
         sessionContent.put("uuid", uuid);

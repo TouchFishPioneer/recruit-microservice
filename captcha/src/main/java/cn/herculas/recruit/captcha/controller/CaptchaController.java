@@ -26,7 +26,7 @@ public class CaptchaController {
     public ResponseVO createCaptcha() {
         String captchaKey = captchaService.createCaptcha();
         Map<String, String> result = new HashMap<>();
-        result.put("captcha_key", captchaKey);
+        result.put("key", captchaKey);
         return ResponseWrapper.success(result);
     }
 
@@ -37,13 +37,11 @@ public class CaptchaController {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return;
         }
-
         String captchaContent = captchaService.findCaptchaContent(captchaKey);
         if (captchaContent == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return;
         }
-
         BufferedImage captchaImage = captchaService.createCaptchaImage(captchaContent);
         ImageIO.write(captchaImage, "JPEG", response.getOutputStream());
     }

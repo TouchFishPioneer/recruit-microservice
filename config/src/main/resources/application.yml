@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/wurahara/recruit-config
+          username: wurahara
+          password: 20090520zw
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bkzs.seu.edu.cn:8761/eureka/, http://bkzs.seu.edu.cn:/8762/eureka/
+server:
+  port: 8785
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
