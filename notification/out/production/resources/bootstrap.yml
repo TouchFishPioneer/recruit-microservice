@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: notification
+  cloud:
+    config:
+      discovery:
+        service-id: config
+        enabled: true
+      profile: dev
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bkzs.seu.edu.cn:8761/eureka/, http://bkzs.seu.edu.cn:8761/eureka/

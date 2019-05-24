@@ -38,7 +38,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question updateQuestion(Question question) {
+    public Question updateQuestion(Question question) throws QuestionException {
         Question oldQuestion = questionRepository.findByQuestionUuid(question.getQuestionUuid());
         if (oldQuestion == null) {
             throw new QuestionException(ExceptionStatusEnum.QUESTION_NOT_EXIST);
@@ -48,7 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question voteForQuestion(String questionUuid, String studentUuid) {
+    public Question voteForQuestion(String questionUuid, String studentUuid) throws QuestionException {
         Question question = questionRepository.findByQuestionUuid(questionUuid);
         if (question == null) {
             throw new QuestionException(ExceptionStatusEnum.QUESTION_NOT_EXIST);

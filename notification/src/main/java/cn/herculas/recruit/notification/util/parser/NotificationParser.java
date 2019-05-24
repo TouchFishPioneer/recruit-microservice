@@ -1,39 +1,39 @@
 package cn.herculas.recruit.notification.util.parser;
 
 import cn.herculas.recruit.notification.data.DO.Notification;
-import cn.herculas.recruit.notification.data.VO.NotificationVO;
+import cn.herculas.recruit.notification.data.FO.NotificationFO;
 import cn.herculas.recruit.notification.enumeration.NotificationStatusEnum;
 
 public class NotificationParser {
-    public static Notification formParser(NotificationVO notificationVO) {
+    public static Notification formParser(NotificationFO notificationFO) {
         Notification notification = new Notification();
 
-        notification.setNotificationTeacherUuid(notificationVO.getTeacher_uuid());
-        notification.setNotificationRegion(notificationVO.getRegion());
-        notification.setNotificationTheme(notificationVO.getTheme());
-        notification.setNotificationContent(notificationVO.getContent());
+        notification.setNotificationTeacherUuid(notificationFO.getTeacher_uuid());
+        notification.setNotificationRegion(notificationFO.getRegion());
+        notification.setNotificationTheme(notificationFO.getTheme());
+        notification.setNotificationContent(notificationFO.getContent());
 
-        if (notificationVO.getStatus() == null) {
+        if (notificationFO.getStatus() == null) {
             notification.setNotificationStatus(NotificationStatusEnum.SENDING.getCode());
         } else {
-            notification.setNotificationStatus(notificationVO.getStatus());
+            notification.setNotificationStatus(notificationFO.getStatus());
         }
 
-        notification.setNotificationUuid(notificationVO.getUuid());
+        notification.setNotificationUuid(notificationFO.getUuid());
 
         return notification;
     }
 
-    public static NotificationVO viewParser(Notification notification) {
-        NotificationVO notificationVO = new NotificationVO();
+    public static NotificationFO viewParser(Notification notification) {
+        NotificationFO notificationFO = new NotificationFO();
 
-        notificationVO.setTeacher_uuid(notification.getNotificationTeacherUuid());
-        notificationVO.setRegion(notification.getNotificationRegion());
-        notificationVO.setTheme(notification.getNotificationTheme());
-        notificationVO.setContent(notification.getNotificationContent());
-        notificationVO.setStatus(notification.getNotificationStatus());
-        notificationVO.setUuid(notification.getNotificationUuid());
+        notificationFO.setTeacher_uuid(notification.getNotificationTeacherUuid());
+        notificationFO.setRegion(notification.getNotificationRegion());
+        notificationFO.setTheme(notification.getNotificationTheme());
+        notificationFO.setContent(notification.getNotificationContent());
+        notificationFO.setStatus(notification.getNotificationStatus());
+        notificationFO.setUuid(notification.getNotificationUuid());
 
-        return notificationVO;
+        return notificationFO;
     }
 }

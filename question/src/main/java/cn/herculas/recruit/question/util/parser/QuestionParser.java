@@ -1,55 +1,55 @@
 package cn.herculas.recruit.question.util.parser;
 
 import cn.herculas.recruit.question.data.DO.Question;
-import cn.herculas.recruit.question.data.VO.QuestionVO;
+import cn.herculas.recruit.question.data.FO.QuestionFO;
 import cn.herculas.recruit.question.enumeration.QuestionStatusEnum;
 
 public class QuestionParser {
-    public static Question formParser(QuestionVO questionVO) {
+    public static Question formParser(QuestionFO questionFO) {
         Question question = new Question();
 
-        question.setQuestionRegion(questionVO.getRegion());
-        question.setQuestionAskerUuid(questionVO.getAsker_uuid());
-        question.setQuestionTheme(questionVO.getTheme());
-        question.setQuestionCategory(questionVO.getCategory());
-        question.setQuestionTag(questionVO.getTag());
+        question.setQuestionRegion(questionFO.getRegion());
+        question.setQuestionAskerUuid(questionFO.getAsker_uuid());
+        question.setQuestionTheme(questionFO.getTheme());
+        question.setQuestionCategory(questionFO.getCategory());
+        question.setQuestionTag(questionFO.getTag());
 
-        if (questionVO.getStatus() == null) {
+        if (questionFO.getStatus() == null) {
             question.setQuestionStatus(QuestionStatusEnum.NOT_REVIEWED.getCode());
         } else {
-            question.setQuestionStatus(questionVO.getStatus());
+            question.setQuestionStatus(questionFO.getStatus());
         }
 
-        question.setQuestionContent(questionVO.getContent());
+        question.setQuestionContent(questionFO.getContent());
 
-        if (questionVO.getVote() == null) {
+        if (questionFO.getVote() == null) {
             question.setQuestionVote(0);
         } else {
-            question.setQuestionVote(questionVO.getVote());
+            question.setQuestionVote(questionFO.getVote());
         }
 
-        question.setQuestionAnswer(questionVO.getAnswer());
-        question.setQuestionAnswererUuid(questionVO.getAnswerer_uuid());
-        question.setQuestionUuid(questionVO.getUuid());
+        question.setQuestionAnswer(questionFO.getAnswer());
+        question.setQuestionAnswererUuid(questionFO.getAnswerer_uuid());
+        question.setQuestionUuid(questionFO.getUuid());
 
         return question;
     }
 
-    public static QuestionVO viewParser(Question question) {
-        QuestionVO questionVO = new QuestionVO();
+    public static QuestionFO viewParser(Question question) {
+        QuestionFO questionFO = new QuestionFO();
 
-        questionVO.setRegion(question.getQuestionRegion());
-        questionVO.setAsker_uuid(question.getQuestionAskerUuid());
-        questionVO.setTheme(question.getQuestionTheme());
-        questionVO.setCategory(question.getQuestionCategory());
-        questionVO.setTag(question.getQuestionTag());
-        questionVO.setStatus(question.getQuestionStatus());
-        questionVO.setContent(question.getQuestionContent());
-        questionVO.setVote(question.getQuestionVote());
-        questionVO.setAnswer(question.getQuestionAnswer());
-        questionVO.setAnswerer_uuid(question.getQuestionAnswererUuid());
-        questionVO.setUuid(question.getQuestionUuid());
+        questionFO.setRegion(question.getQuestionRegion());
+        questionFO.setAsker_uuid(question.getQuestionAskerUuid());
+        questionFO.setTheme(question.getQuestionTheme());
+        questionFO.setCategory(question.getQuestionCategory());
+        questionFO.setTag(question.getQuestionTag());
+        questionFO.setStatus(question.getQuestionStatus());
+        questionFO.setContent(question.getQuestionContent());
+        questionFO.setVote(question.getQuestionVote());
+        questionFO.setAnswer(question.getQuestionAnswer());
+        questionFO.setAnswerer_uuid(question.getQuestionAnswererUuid());
+        questionFO.setUuid(question.getQuestionUuid());
 
-        return questionVO;
+        return questionFO;
     }
 }

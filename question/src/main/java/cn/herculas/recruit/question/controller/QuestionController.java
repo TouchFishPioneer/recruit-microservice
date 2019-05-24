@@ -1,7 +1,7 @@
 package cn.herculas.recruit.question.controller;
 
 import cn.herculas.recruit.question.data.DO.Question;
-import cn.herculas.recruit.question.data.VO.QuestionVO;
+import cn.herculas.recruit.question.data.FO.QuestionFO;
 import cn.herculas.recruit.question.data.VO.ResponseVO;
 import cn.herculas.recruit.question.enumeration.QuestionStatusEnum;
 import cn.herculas.recruit.question.exception.QuestionException;
@@ -15,8 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class QuestionController {
@@ -31,19 +31,16 @@ public class QuestionController {
     public ResponseVO listQuestions(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                     @RequestParam(value = "size", defaultValue = "20") Integer size) {
         Page<Question> questionPage = questionService.listQuestions(PageRequest.of(page, size));
-        List<QuestionVO> questionVOList = new ArrayList<>();
-        for (Question question : questionPage) {
-            questionVOList.add(QuestionParser.viewParser(question));
-        }
-        return ResponseWrapper.success(questionVOList);
+        List<QuestionFO> questionFOList = questionPage.stream().map(QuestionParser::viewParser).collect(Collectors.toList());
+        return ResponseWrapper.success(questionFOList);
     }
 
     @PostMapping("/index")
-    public ResponseVO createQuestion(@Valid QuestionVO questionVO, BindingResult bindingResult) {
+    public ResponseVO createQuestion(@Valid QuestionFO questionFO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseWrapper.error(HttpStatus.BAD_REQUEST, "Invalid parameters");
+            return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
-        Question question = QuestionParser.formParser(questionVO);
+        Question question = QuestionParser.formParser(questionFO);
         Question result = questionService.createQuestion(question);
         return ResponseWrapper.success(QuestionParser.viewParser(result));
     }
@@ -52,12 +49,17 @@ public class QuestionController {
     public ResponseVO reviewQuestion(@PathVariable("uuid") String questionUuid,
                                      @RequestParam("status") Integer questionStatus) {
         if (!QuestionStatusEnum.contains(questionStatus)) {
-            return ResponseWrapper.error(HttpStatus.BAD_REQUEST, "Invalid parameters");
+            return ResponseWrapper.error(HttpStatus.BAD_REQUEST, "status", "Do not contains this type of status.");
         }
         Question question = new Question();
         question.setQuestionUuid(questionUuid);
         question.setQuestionStatus(questionStatus);
-        return this.updateQuestion(question);
+        try {
+            return this.updateQuestion(question);
+        } catch (QuestionException e) {
+            return ResponseWrapper.error(HttpStatus.FORBIDDEN, e);
+        }
+
     }
 
     @PostMapping("/vote/{uuid}")
@@ -67,7 +69,7 @@ public class QuestionController {
             Question result = questionService.voteForQuestion(questionUuid, studentUuid);
             return ResponseWrapper.success(QuestionParser.viewParser(result));
         } catch (QuestionException e) {
-            return ResponseWrapper.error(HttpStatus.FORBIDDEN, e.getMessage());
+            return ResponseWrapper.error(HttpStatus.FORBIDDEN, e);
         }
     }
 
@@ -79,15 +81,16 @@ public class QuestionController {
         question.setQuestionUuid(questionUuid);
         question.setQuestionAnswer(questionAnswer);
         question.setQuestionAnswererUuid(answererUuid);
-        return this.updateQuestion(question);
+        try {
+            return this.updateQuestion(question);
+        } catch (QuestionException e) {
+            return ResponseWrapper.error(HttpStatus.FORBIDDEN, e);
+        }
+
     }
 
-    private ResponseVO updateQuestion(Question question) {
-        try {
-            Question result = questionService.updateQuestion(question);
-            return ResponseWrapper.success(QuestionParser.viewParser(result));
-        } catch (QuestionException e) {
-            return ResponseWrapper.error(HttpStatus.FORBIDDEN, e.getMessage());
-        }
+    private ResponseVO updateQuestion(Question question) throws QuestionException {
+        Question result = questionService.updateQuestion(question);
+        return ResponseWrapper.success(QuestionParser.viewParser(result));
     }
 }

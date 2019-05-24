@@ -8,6 +8,11 @@ spring:
           uri: https://github.com/wurahara/recruit-config
           username: wurahara
           password: 20090520zw
+  rabbitmq:
+    host: bkzs.seu.edu.cn
+    port: 5672
+    username: wurahara
+    password: 19941120
 eureka:
   client:
     service-url:
