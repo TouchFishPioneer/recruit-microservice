@@ -49,7 +49,7 @@ public class StudentAccountServiceImpl implements StudentAccountService {
             throw new StudentException(ExceptionStatusEnum.STUDENT_NOT_EXIST);
         }
         PropertyReplicator.copyPropertiesIgnoreNull(studentAccount, oldStudentAccount);
-        return studentAccountRepository.save(studentAccount);
+        return studentAccountRepository.save(oldStudentAccount);
     }
 
     @Override
