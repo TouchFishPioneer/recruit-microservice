@@ -6,6 +6,7 @@ import cn.herculas.recruit.student.data.VO.ResponseVO;
 import cn.herculas.recruit.student.data.VO.StudentInfoVO;
 import cn.herculas.recruit.student.exception.StudentException;
 import cn.herculas.recruit.student.service.StudentInfoService;
+import cn.herculas.recruit.student.util.formatter.QueryFormatter;
 import cn.herculas.recruit.student.util.parser.StudentInfoParser;
 import cn.herculas.recruit.student.util.wrapper.ResponseWrapper;
 import org.springframework.data.domain.Page;
@@ -30,19 +31,26 @@ public class StudentInfoController {
 
     @GetMapping("/list")
     public ResponseVO listStudentInfo(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                      @RequestParam(value = "size", defaultValue = "20") Integer size) {
+                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
+                                      @RequestParam(value = "region") String region) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
-        Page<StudentInfo> studentInfoPage = studentInfoService.listStudentInfo(PageRequest.of(page, size));
-        List<StudentInfoVO> studentInfoVOList = studentInfoPage.stream().map(StudentInfoParser::viewParser).collect(Collectors.toList());
+        Page<StudentInfo> studentInfoPage = studentInfoService
+                .listStudentInfo(
+                        QueryFormatter.regionQueryFormatter(region),
+                        PageRequest.of(page, size));
+        List<StudentInfoVO> studentInfoVOList = studentInfoPage
+                .stream()
+                .map(StudentInfoParser::viewParser)
+                .collect(Collectors.toList());
         return ResponseWrapper.success(studentInfoVOList);
     }
 
     @GetMapping("/index/{uuid}")
     public ResponseVO findStudentInfo(@PathVariable(value = "uuid") String studentUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         try {
             StudentInfo result = studentInfoService.findStudentInfo(studentUuid);
@@ -54,9 +62,6 @@ public class StudentInfoController {
 
     @PostMapping("/index")
     public ResponseVO createStudentInfo(@Valid StudentInfoFO studentInfoFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
@@ -71,9 +76,6 @@ public class StudentInfoController {
 
     @PatchMapping("/index")
     public ResponseVO updateStudentInfo(@Valid StudentInfoFO studentInfoFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }

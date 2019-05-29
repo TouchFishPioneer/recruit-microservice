@@ -32,17 +32,21 @@ public class TeacherInfoController {
     public ResponseVO listTeacherInfo(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "20") Integer size) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
-        Page<TeacherInfo> teacherInfoPage = teacherInfoService.listTeacherInfo(PageRequest.of(page, size));
-        List<TeacherInfoVO> teacherInfoVOList = teacherInfoPage.stream().map(TeacherInfoParser::viewParser).collect(Collectors.toList());
+        Page<TeacherInfo> teacherInfoPage = teacherInfoService
+                .listTeacherInfo(PageRequest.of(page, size));
+        List<TeacherInfoVO> teacherInfoVOList = teacherInfoPage
+                .stream()
+                .map(TeacherInfoParser::viewParser)
+                .collect(Collectors.toList());
         return ResponseWrapper.success(teacherInfoVOList);
     }
 
     @GetMapping("/index/{uuid}")
     public ResponseVO findTeacherInfo(@PathVariable(value = "uuid") String teacherUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         try {
             TeacherInfo result = teacherInfoService.findTeacherInfo(teacherUuid);
@@ -54,9 +58,6 @@ public class TeacherInfoController {
 
     @PostMapping("/index")
     public ResponseVO createTeacherInfo(@Valid TeacherInfoFO teacherInfoFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
@@ -71,9 +72,6 @@ public class TeacherInfoController {
 
     @PatchMapping("/index")
     public ResponseVO updateTeacherInfo(@Valid TeacherInfoFO teacherInfoFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }

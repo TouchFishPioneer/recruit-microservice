@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface StudentInfoService {
-    Page<StudentInfo> listStudentInfo(Pageable pageable);
+    Page<StudentInfo> listStudentInfo(String regionFormat, Pageable pageable);
     StudentInfo findStudentInfo(String studentUuid);
     StudentInfo createStudentInfo(StudentInfo studentInfo);
     StudentInfo updateStudentInfo(StudentInfo studentInfo);

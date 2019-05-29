@@ -20,7 +20,7 @@ public class TeacherAccountServiceImpl implements TeacherAccountService {
     }
 
     @Override
-    public TeacherAccount findTeacherAccountByUuid(String teacherUuid) throws TeacherException {
+    public TeacherAccount findTeacherAccount(String teacherUuid) throws TeacherException {
         TeacherAccount teacherAccount = teacherAccountRepository.findByTeacherUuid(teacherUuid);
         if (teacherAccount == null)
             throw new TeacherException(ExceptionStatusEnum.TEACHER_NOT_EXIST);

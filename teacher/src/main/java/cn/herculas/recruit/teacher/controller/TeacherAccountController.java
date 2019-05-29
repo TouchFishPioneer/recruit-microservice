@@ -4,8 +4,6 @@ import cn.herculas.recruit.teacher.data.DO.TeacherAccount;
 import cn.herculas.recruit.teacher.data.FO.TeacherAccountFO;
 import cn.herculas.recruit.teacher.data.VO.ResponseVO;
 import cn.herculas.recruit.teacher.exception.TeacherException;
-import cn.herculas.recruit.teacher.service.CookieService;
-import cn.herculas.recruit.teacher.service.SessionService;
 import cn.herculas.recruit.teacher.service.TeacherAccountService;
 import cn.herculas.recruit.teacher.util.parser.TeacherAccountParser;
 import cn.herculas.recruit.teacher.util.wrapper.ResponseWrapper;
@@ -13,58 +11,32 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/account")
 public class TeacherAccountController {
-
-    private final CookieService cookieService;
-    private final SessionService sessionService;
     private final TeacherAccountService teacherAccountService;
 
-    public TeacherAccountController(TeacherAccountService teacherAccountService,
-                                    CookieService cookieService,
-                                    SessionService sessionService) {
+    public TeacherAccountController(TeacherAccountService teacherAccountService) {
         this.teacherAccountService = teacherAccountService;
-        this.cookieService = cookieService;
-        this.sessionService = sessionService;
     }
 
     @GetMapping("/index")
-    public ResponseVO getTeacherAccount(HttpServletRequest httpServletRequest) {
+    public ResponseVO getTeacherAccount(@RequestParam("uuid") String teacherUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
-        Cookie cookie = cookieService.findCookie(httpServletRequest);
-        if (cookie == null) {
-            return ResponseWrapper.error(HttpStatus.NOT_FOUND,
-                    "cookie",
-                    "Cannot find valid cookie.");
+        try {
+            TeacherAccount result = teacherAccountService.findTeacherAccount(teacherUuid);
+            return ResponseWrapper.success(TeacherAccountParser.viewParser(result));
+        } catch (TeacherException e) {
+            return ResponseWrapper.error(HttpStatus.BAD_REQUEST, e);
         }
-        Map<String, String> sessionContent = sessionService.findSession(cookie.getValue());
-        if (sessionContent == null || !sessionContent.containsKey("uuid")) {
-            return ResponseWrapper.error(HttpStatus.NOT_FOUND,
-                    "session",
-                    "Cannot find valid session.");
-        }
-        TeacherAccount teacherAccount = teacherAccountService.findTeacherAccountByUuid(sessionContent.get("uuid"));
-        if (teacherAccount == null) {
-            return ResponseWrapper.error(HttpStatus.NOT_FOUND,
-                    "existence",
-                    "Teacher do not exist.");
-        }
-        return ResponseWrapper.success(TeacherAccountParser.viewParser(teacherAccount));
     }
 
     @PostMapping("/index")
     public ResponseVO createTeacherAccount(@Valid TeacherAccountFO teacherAccountFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
@@ -80,7 +52,7 @@ public class TeacherAccountController {
     @PatchMapping("/detail")
     public ResponseVO updateTeacherAccount(@Valid TeacherAccountFO teacherAccountFO, BindingResult bindingResult) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
@@ -103,11 +75,11 @@ public class TeacherAccountController {
                                                    @RequestParam("password") String newPassword,
                                                    @RequestParam("uuid") String teacherUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         TeacherAccount teacherAccount;
         try {
-            teacherAccount = teacherAccountService.findTeacherAccountByUuid(teacherUuid);
+            teacherAccount = teacherAccountService.findTeacherAccount(teacherUuid);
         } catch (TeacherException e) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, e);
         }

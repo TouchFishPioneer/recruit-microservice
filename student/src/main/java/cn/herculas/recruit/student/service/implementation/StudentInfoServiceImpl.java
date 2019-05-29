@@ -26,8 +26,8 @@ public class StudentInfoServiceImpl implements StudentInfoService {
     }
 
     @Override
-    public Page<StudentInfo> listStudentInfo(Pageable pageable) {
-        return studentInfoRepository.findAll(pageable);
+    public Page<StudentInfo> listStudentInfo(String regionFormat, Pageable pageable) {
+        return studentInfoRepository.findAllByStudentRegionLike(regionFormat, pageable);
     }
 
     @Override

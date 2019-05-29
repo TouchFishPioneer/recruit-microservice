@@ -256,7 +256,6 @@
     **Accessibility**
 
     - Teacher Administrator
-    - Teacher Team Leader
     
     **Request**
     

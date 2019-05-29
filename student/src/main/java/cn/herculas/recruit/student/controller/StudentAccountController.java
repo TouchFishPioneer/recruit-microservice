@@ -26,7 +26,7 @@ public class StudentAccountController {
     @GetMapping("/index")
     public ResponseVO getStudentAccount(@RequestParam("uuid") String studentUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         try {
             StudentAccount result = studentAccountService.findStudentAccount(studentUuid);
@@ -38,9 +38,6 @@ public class StudentAccountController {
 
     @PostMapping("/index")
     public ResponseVO createStudentAccount(@Valid StudentAccountFO studentAccountFO, BindingResult bindingResult) {
-
-        // TODO: Permission check
-
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
         }
@@ -56,7 +53,7 @@ public class StudentAccountController {
     @PatchMapping("/detail")
     public ResponseVO updateStudentAccount(@Valid StudentAccountFO studentAccountFO, BindingResult bindingResult) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         if (bindingResult.hasErrors()) {
             return ResponseWrapper.error(HttpStatus.BAD_REQUEST, bindingResult);
@@ -81,7 +78,7 @@ public class StudentAccountController {
                                             @RequestParam("password") String newPassword,
                                             @RequestParam("uuid") String studentUuid) {
 
-        // TODO: Permission check
+        // TODO: Permission check implemented by Zuul Gateway
 
         StudentAccount studentAccount;
         try {
