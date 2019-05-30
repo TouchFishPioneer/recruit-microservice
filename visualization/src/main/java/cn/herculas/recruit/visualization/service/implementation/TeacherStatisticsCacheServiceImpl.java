@@ -41,7 +41,7 @@ public class TeacherStatisticsCacheServiceImpl implements TeacherStatisticsCache
             teacherStatisticsClientService.getTeacherGenderStatistics();
             cachedTeacherGenderStatistics = stringRedisTemplate.opsForValue().get(TEACHER_GENDER_KEY);
         }
-       return JSONObject.parseObject(cachedTeacherGenderStatistics, new TypeReference<Map<Integer, Long>>() {});
+        return JSONObject.parseObject(cachedTeacherGenderStatistics, new TypeReference<Map<Integer, Long>>() {});
     }
 
     @Override

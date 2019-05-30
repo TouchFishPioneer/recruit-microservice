@@ -3,6 +3,8 @@ package cn.herculas.recruit.visualization.controller;
 import cn.herculas.recruit.visualization.data.VO.ResponseVO;
 import cn.herculas.recruit.visualization.service.StudentStatisticsCacheService;
 import cn.herculas.recruit.visualization.util.wrapper.ResponseWrapper;
+import com.alibaba.fastjson.JSONException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,31 +21,59 @@ public class StudentVisualizationController {
 
     @GetMapping("/gender")
     public ResponseVO getStudentGenderStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentGenderStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentGenderStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
+
     }
 
     @GetMapping("/province")
     public ResponseVO getStudentProvinceStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentProvinceStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentProvinceStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
     }
 
     @GetMapping("/city")
     public ResponseVO getStudentCityStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentCityStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentCityStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
     }
 
     @GetMapping("/division")
     public ResponseVO getStudentDivisionStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentDivisionStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentDivisionStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
+
     }
 
     @GetMapping("/contact")
     public ResponseVO getStudentContactStatusStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentContactStatusStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentContactStatusStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
+
     }
 
     @GetMapping("/grade")
     public ResponseVO getStudentGradeStatistics() {
-        return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentGradeStatistics());
+        try {
+            return ResponseWrapper.success(studentStatisticsCacheService.getCachedStudentGradeStatistics());
+        } catch (JSONException e) {
+            return ResponseWrapper.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+        }
+
     }
 }

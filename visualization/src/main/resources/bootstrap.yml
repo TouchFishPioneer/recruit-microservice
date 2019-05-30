@@ -4,7 +4,7 @@ spring:
   cloud:
     config:
       discovery:
-        service-id: configurer
+        service-id: config
         enabled: true
       profile: dev
 eureka:
